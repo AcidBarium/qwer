@@ -1,0 +1,87 @@
+#include <iostream>
+using namespace std;
+
+struct ListNode
+{
+    int value;
+    ListNode *next;
+    ListNode(int val) : value(val), next(NULL) {}
+};
+
+class LinkedList
+{
+public:
+    ListNode *head;
+
+    LinkedList()
+    {
+        head = new ListNode(0);
+    }
+
+    void insert(int val)
+    {
+        ListNode *newNode = new ListNode(val);
+        newNode->next = head->next;
+        head->next = newNode;
+    }
+
+    void deleteValue(int x)
+    {
+        ListNode *current = head;
+        while (current->next != NULL)
+        {
+            if (current->next->value == x)
+            {
+                ListNode *toDelete = current->next;
+                current->next = current->next->next;
+                delete toDelete;
+            }
+            else
+            {
+                current = current->next;
+            }
+        }
+    }
+
+    void print()
+    {
+        ListNode *current = head->next;
+        while (current != NULL)
+        {
+            cout << current->value << " ";
+            current = current->next;
+        }
+        cout << endl;
+    }
+
+    ~LinkedList()
+    {
+        ListNode *current = head;
+        while (current != NULL)
+        {
+            ListNode *nextNode = current->next;
+            delete current;
+            current = nextNode;
+        }
+    }
+};
+
+int main()
+{
+    LinkedList list;
+    list.insert(1);
+    list.insert(2);
+    list.insert(3);
+    list.insert(2);
+    list.insert(4);
+
+    cout << "before:" << endl;
+    list.print();
+
+    int x = 2;
+    list.deleteValue(x);
+    cout << "after delete " << x << ": " << endl;
+    list.print();
+
+    return 0;
+}

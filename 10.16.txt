@@ -1,0 +1,81 @@
+#include <iostream>
+using namespace std;
+
+class OrderedList
+{
+private:
+    int *data;
+    int capacity;
+    int size;
+
+public:
+    OrderedList(int cap) : capacity(cap), size(0)
+    {
+        data = new int[capacity];
+    }
+
+    ~OrderedList()
+    {
+        delete[] data;
+    }
+
+    void insert(int val)
+    {
+        if (size >= capacity)
+            return;
+        int i = size - 1;
+        while (i >= 0 && data[i] > val)
+        {
+            data[i + 1] = data[i];
+            i--;
+        }
+        data[i + 1] = val;
+        size++;
+    }
+
+    void removeBetween(int s, int t)
+    {
+        int newSize = 0;
+        for (int i = 0; i < size; i++)
+        {
+            if (data[i] <= s || data[i] >= t)
+            {
+                data[newSize++] = data[i];
+            }
+        }
+        size = newSize;
+    }
+
+    void display()
+    {
+        for (int i = 0; i < size; i++)
+        {
+            cout << data[i] << " ";
+        }
+        cout << endl;
+    }
+};
+
+int main()
+{
+    OrderedList list(10);
+    list.insert(1);
+    list.insert(2);
+    list.insert(3);
+    list.insert(4);
+    list.insert(5);
+    list.insert(6);
+    list.insert(7);
+    list.insert(9);
+
+    cout << "before : " << endl;
+    list.display();
+
+    int s = 2, t = 6;
+    list.removeBetween(s, t);
+    cout << "after remove" << s << " and " << t << ": " << endl;
+
+    list.display();
+
+    return 0;
+}
